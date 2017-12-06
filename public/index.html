@@ -1,0 +1,110 @@
+<html>
+        <head>
+          <link href="https://fonts.googleapis.com/css?family=Nunito" rel="stylesheet">
+          <style>
+            * {
+              font-family: 'Nunito', sans-serif;
+              -webkit-font-smoothing: antialiased;
+            }
+            input[placeholder] {
+              text-align: center;
+            }
+            input {
+              display: block;
+              margin: 1.5em 0em;
+              height: 4em;
+              width: 40%;
+            }
+            button:active, button {
+              display: block;
+              margin: 1.5em 0em;
+              height: 4em;
+              width: 40%;
+              background: #91088c;
+              border: 1px solid rgb(102, 184, 174);
+              border-radius: 2px;
+              outline: none;
+              cursor: pointer;
+              font-size: 16px;
+              color: white;
+            }
+            #form {
+              position: absolute;
+              left: 0;
+              top: 0;
+              width:100%;
+              height:100%;
+              display: flex;
+              flex-direction: column;
+              justify-content: center;
+              align-items: center;
+            }
+            label {
+              margin-left:-480px;
+              margin-bottom: -20px;
+              color: rgb(80, 80, 80);
+              font-size: 18px;
+            }
+          </style>
+        </head>
+        <body>
+          <form id="form">
+            
+            <label for="ta">TeamA</label>
+            <input id="ta" type="number" placeholder="Team A" />
+      
+            <label for="tb">TeamB</label>
+            <input id="tb" type="number" placeholder="Team B" />
+      
+            <label for="tc">TeamB</label>
+            <input id="tc" type="number" placeholder="Team C" />
+      
+            <label for="td">TeamD</label>
+            <input id="td" type="number" placeholder="Team D" />
+      
+            <button typr="submit" id="button">Update</button>
+          </form>
+          <script src="https://www.gstatic.com/firebasejs/4.7.0/firebase.js"></script>
+          <script>
+            const config = {
+              apiKey: "AIzaSyDecVtX0xxg58IcNRfCGzXBvKxMAwvY7X0",
+              authDomain: "quizapp-cd714.firebaseapp.com",
+              databaseURL: "https://quizapp-cd714.firebaseio.com",
+              projectId: "quizapp-cd714",
+              storageBucket: "quizapp-cd714.appspot.com",
+              messagingSenderId: "900235757767"
+            };
+            firebase.initializeApp(config);
+      
+            const button = document.getElementById('button');
+            const form = document.getElementById('form');
+
+            const inputs = {
+              ta: document.getElementById('ta'),
+              tb: document.getElementById('tb'),
+              tc: document.getElementById('tc'),
+              td: document.getElementById('td'),
+            }
+            const db = firebase.database();
+            const names = ['ta', 'tb', 'tc', 'td'];
+            
+            function getVals() {
+              db.ref('/Day1/-L-V-mQHUnj-SwDMwbXk').on('value', (snap) => {
+                const val = snap.val();
+                Object.values(val).forEach((score, i) => inputs[names[i]].value = +score);
+              });
+            }
+            getVals();
+      
+            form.addEventListener('submit', (e) => {
+              e.preventDefault();
+              db.ref('/Day1/-L-V-mQHUnj-SwDMwbXk/').set({
+                TeamA: ta.value,
+                TeamB: tb.value,
+                TeamC: tc.value,
+                TeamD: td.value,
+              });
+            });
+          </script>
+        </body>
+      </html>
